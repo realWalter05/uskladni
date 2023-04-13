@@ -1,5 +1,8 @@
+import { PrismaClient } from "@prisma/client";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+
+const prisma = new PrismaClient();
 
 export default NextAuth({
 	secret: process.env.NEXTAUTH_SECRET,
@@ -17,7 +20,9 @@ export default NextAuth({
 			email: { label: "email", type: "text" },
 			password: { label: "password", type: "password" },
 		},
+		
 		async authorize(credentials) {
+			const users = await prisma.user.findMany();
 			if (
 				credentials?.email !== "admin@admin.com" ||
 				credentials?.password !== "admin"

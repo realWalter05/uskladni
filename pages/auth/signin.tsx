@@ -11,21 +11,18 @@ export default function signin() {
   const callbackUrl = (router.query?.callbackUrl as string) ?? "/";
 
   const handleSubmit:FormEventHandler<HTMLFormElement> = async (e) => {
-     e.preventDefault();
-     const {email, password} = userInfo;
-     // validate your user info
-  
+    e.preventDefault();
+
+    const {email, password} = userInfo;  
     const result = await signIn(
       "credentials", { email, password, redirect: false },
     );
 
-    console.log(result);
     if (result?.error) {
       setError(result.error);
     } else {
       router.push(callbackUrl);
     }
-
   };
 
   return (
